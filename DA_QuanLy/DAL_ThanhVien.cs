@@ -92,13 +92,8 @@ namespace DA_QuanLy
             try
             {
                 _conn.Open();
-
-                string SQL = string.Format("UPDATE THANHVIEN SET TEN_SV = '{1}', LOP_SV = '{2}', ID_NGANH = '{3}', ID_KHOA = '{4}' WHERE MSSV = '{0}'", sv.TEN_SV, sv.LOP_SV, sv.ID_NGANH, sv.ID_KHOA, sv.MSSV);
-
-                // Command (mặc định command type = text nên chúng ta khỏi fải làm gì nhiều).
+                string SQL = string.Format("UPDATE THANHVIEN SET TEN_SV = '{1}', LOP_SV = '{2}', ID_NGANH = '{3}', ID_KHOA = '{4}' WHERE MSSV = '{0}'", sv.MSSV, sv.TEN_SV, sv.LOP_SV, sv.ID_NGANH, sv.ID_KHOA);
                 SqlCommand cmd = new SqlCommand(SQL, _conn);
-
-                // Query và kiểm tra
                 if (cmd.ExecuteNonQuery() > 0)
                     return true;
 
@@ -122,11 +117,7 @@ namespace DA_QuanLy
             {
                 // Ket noi
                 _conn.Open();
-
-                // Query string - vì xóa chỉ cần ID nên chúng ta ko cần 1 DTO, ID là đủ
                 string SQL = string.Format("DELETE FROM THANHVIEN WHERE MSSV = '{0}'", sv.MSSV);
-
-                // Command (mặc định command type = text nên chúng ta khỏi fải làm gì nhiều).
                 SqlCommand cmd = new SqlCommand(SQL, _conn);
 
                 // Query và kiểm tra

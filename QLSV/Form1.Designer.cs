@@ -58,9 +58,12 @@
             this.txtclass = new System.Windows.Forms.TextBox();
             this.txtidn = new System.Windows.Forms.TextBox();
             this.txtidk = new System.Windows.Forms.TextBox();
-            this.timerautoadd = new System.Windows.Forms.Timer(this.components);
+            this.timerauto = new System.Windows.Forms.Timer(this.components);
             this.btnfind = new System.Windows.Forms.Button();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
+            this.lberror = new System.Windows.Forms.Label();
+            this.btnOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tDA2020ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sinhVienDataSet)).BeginInit();
@@ -99,6 +102,7 @@
             // 
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnOpen,
             this.btnloaddb,
             this.btnexit});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
@@ -111,20 +115,22 @@
             // btnloaddb
             // 
             this.btnloaddb.Name = "btnloaddb";
-            this.btnloaddb.Size = new System.Drawing.Size(119, 22);
+            this.btnloaddb.Size = new System.Drawing.Size(180, 22);
             this.btnloaddb.Text = "Load file";
             this.btnloaddb.Click += new System.EventHandler(this.btnloaddb_Click);
             // 
             // btnexit
             // 
             this.btnexit.Name = "btnexit";
-            this.btnexit.Size = new System.Drawing.Size(119, 22);
+            this.btnexit.Size = new System.Drawing.Size(180, 22);
             this.btnexit.Text = "Thoát";
             this.btnexit.Click += new System.EventHandler(this.btnexit_Click);
             // 
             // btninfo
             // 
             this.btninfo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btninfo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tDA2020ToolStripMenuItem});
             this.btninfo.Image = ((System.Drawing.Image)(resources.GetObject("btninfo.Image")));
             this.btninfo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btninfo.Name = "btninfo";
@@ -314,7 +320,6 @@
             this.txtidn.Name = "txtidn";
             this.txtidn.Size = new System.Drawing.Size(27, 20);
             this.txtidn.TabIndex = 31;
-            this.txtidn.TextChanged += new System.EventHandler(this.txtidn_TextChanged);
             // 
             // txtidk
             // 
@@ -324,11 +329,11 @@
             this.txtidk.Size = new System.Drawing.Size(27, 20);
             this.txtidk.TabIndex = 33;
             // 
-            // timerautoadd
+            // timerauto
             // 
-            this.timerautoadd.Enabled = true;
-            this.timerautoadd.Interval = 60000;
-            this.timerautoadd.Tick += new System.EventHandler(this.btnloaddb_Click);
+            this.timerauto.Enabled = true;
+            this.timerauto.Interval = 6000;
+            this.timerauto.Tick += new System.EventHandler(this.timerauto_Tick);
             // 
             // btnfind
             // 
@@ -348,11 +353,35 @@
             this.txtTimKiem.Size = new System.Drawing.Size(172, 20);
             this.txtTimKiem.TabIndex = 35;
             // 
+            // lberror
+            // 
+            this.lberror.AutoSize = true;
+            this.lberror.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lberror.ForeColor = System.Drawing.Color.Red;
+            this.lberror.Location = new System.Drawing.Point(212, 113);
+            this.lberror.Name = "lberror";
+            this.lberror.Size = new System.Drawing.Size(0, 13);
+            this.lberror.TabIndex = 37;
+            // 
+            // btnOpen
+            // 
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(180, 22);
+            this.btnOpen.Text = "Mở file";
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
+            // 
+            // tDA2020ToolStripMenuItem
+            // 
+            this.tDA2020ToolStripMenuItem.Name = "tDA2020ToolStripMenuItem";
+            this.tDA2020ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tDA2020ToolStripMenuItem.Text = "TDA, 2020.";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(617, 558);
+            this.Controls.Add(this.lberror);
             this.Controls.Add(this.txtTimKiem);
             this.Controls.Add(this.btnfind);
             this.Controls.Add(this.txtid);
@@ -418,9 +447,12 @@
         private System.Windows.Forms.TextBox txtclass;
         private System.Windows.Forms.TextBox txtidn;
         private System.Windows.Forms.TextBox txtidk;
-        private System.Windows.Forms.Timer timerautoadd;
+        private System.Windows.Forms.Timer timerauto;
         private System.Windows.Forms.Button btnfind;
         private System.Windows.Forms.TextBox txtTimKiem;
+        private System.Windows.Forms.Label lberror;
+        private System.Windows.Forms.ToolStripMenuItem btnOpen;
+        private System.Windows.Forms.ToolStripMenuItem tDA2020ToolStripMenuItem;
     }
 }
 

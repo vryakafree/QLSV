@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTO_QuanLy;
 using BUS_QuanLy;
+using System.IO;
 
 namespace QLSV
 {
@@ -45,7 +46,7 @@ namespace QLSV
                 }
                 else
                 {
-                    MessageBox.Show("Thêm không thành công");
+                    lberror.Text = "Trùng id";
                 }
             }
             else
@@ -56,32 +57,22 @@ namespace QLSV
 
         private void btnedit_Click(object sender, EventArgs e)
         {
-            // Kiểm tra nếu có chọn table rồi
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                if (txtname.Text != "" && txtid.Text != "" && txtclass.Text != "" && txtidk.Text != "" && txtidn.Text != "")
+                // Tạo DTo
+                DTO_ThanhVien tv = new DTO_ThanhVien(Convert.ToInt32(txtid.Text), txtname.Text, txtclass.Text, Convert.ToInt32(txtidk.Text), Convert.ToInt32(txtidn.Text)); // Vì ID tự tăng nên để ID số gì cũng dc
+
+                // Xóa
+                if (busTV.SuaThanhVien(tv))
                 {
-                    // Lấy row hiện tại
-                    DataGridViewRow row = dataGridView1.SelectedRows[0];
-
-                    // Tạo DTo
-                    DTO_ThanhVien tv = new DTO_ThanhVien(Convert.ToInt32(txtid.Text), txtname.Text, txtclass.Text, Convert.ToInt32(txtidk.Text), Convert.ToInt32(txtidn.Text)); // Vì ID tự tăng nên để ID số gì cũng dc
-
-                    // Sửa
-                    if (busTV.SuaThanhVien(tv))
-                    {
-                        MessageBox.Show("Sửa thành công");
-                        dataGridView1.DataSource = busTV.GetThanhVien(); // refresh datagridview
-                    }
-                    else
-                    {
-                        MessageBox.Show("Sửa ko thành công");
-                    }
+                    MessageBox.Show("Sửa thành công");
+                    dataGridView1.DataSource = busTV.GetThanhVien();
                 }
                 else
                 {
-                    MessageBox.Show("Xin hãy nhập đầy đủ");
+                    MessageBox.Show("Sửa ko thành công");
                 }
+
             }
             else
             {
@@ -114,6 +105,17 @@ namespace QLSV
             }
         }
 
+        private void btnfind_Click(object sender, EventArgs e)
+        {
+            string value = txtTimKiem.Text;
+            if (!string.IsNullOrEmpty(value))
+            {
+                DataTable dt = busTV.TimSinhVien(value);
+                dataGridView1.DataSource = dt;
+            }
+            else
+                dataGridView1.DataSource = busTV.GetThanhVien();
+        }
 
 
         private void Form1_Load(object sender, EventArgs e)
@@ -151,21 +153,63 @@ namespace QLSV
             txtidk.Text = row.Cells[4].Value.ToString();
         }
 
-        private void txtidn_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void btnfind_Click(object sender, EventArgs e)
+        private void timerauto_Tick(object sender, EventArgs e)
         {
-            string value = txtTimKiem.Text;
-            if (!string.IsNullOrEmpty(value))
+            Random rdn = new Random();
+            int id = rdn.Next(1000000000, 2000000000);
+            int idk = rdn.Next(1, 13);
+            int idn = rdn.Next(1, 49);
+            txtid.Text = id.ToString();
+            txtidn.Text = idn.ToString();
+            txtidk.Text = idk.ToString();
+            txtname.Text = "Anonymous";
+            txtclass.Text = "17DXXXXX";
+
+            if (txtname.Text != "" && txtclass.Text != "" && txtid.Text != "" && txtidk.Text != "" && txtidn.Text != "")
             {
-                DataTable dt = busTV.TimSinhVien(value);
-                dataGridView1.DataSource = dt;
+                DTO_ThanhVien tv = new DTO_ThanhVien(Convert.ToInt32(txtid.Text), txtname.Text, txtclass.Text, Convert.ToInt32(txtidk.Text), Convert.ToInt32(txtidn.Text));
+
+                if (busTV.ThemThanhVien(tv))
+                {
+                    dataGridView1.DataSource = busTV.GetThanhVien(); // refresh datagridview
+                }
+                else
+                {
+                    lberror.Text = "Trùng id";
+                }
             }
             else
-                dataGridView1.DataSource = busTV.GetThanhVien();
+            {
+                MessageBox.Show("Thiếu dữ kiện");
+            }
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    StreamReader streamReader = new StreamReader(openFileDialog.FileName);
+                    dataGridView1.AllowUserToAddRows = false;
+                    string text = "";
+                    for (text = streamReader.ReadLine(); text != null; text = streamReader.ReadLine())
+                    {
+
+                        string[] array = text.Split(new char[] { '|' });
+                        dataGridView1.Rows.Add(array);
+
+                    }
+                    streamReader.Close();
+
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show("Error" + err.Message);
+                }
+            }
         }
     }
 }
